@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack_dev
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+      - "8080:8080"
+    environment:
+      # Lista de serviços necessários
+      SERVICES: s3,dynamodb,lambda,apigateway,logs
+      # Região padrão (usada na configuração do aws cli e .env)
+      DEFAULT_REGION: us-east-1
+      # Habilita logs detalhados
+      DEBUG: 1
+      # Persistência de dados (opcional, mas útil)
+      DATA_DIR: /tmp/localstack/data
+      # Configuração para que a Lambda rode com Docker (mais próximo do ambiente AWS)
+      LAMBDA_EXECUTOR: docker
+      # Permite a execução da Lambda com a imagem oficial do AWS
+      DOCKER_IN_DOCKER: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

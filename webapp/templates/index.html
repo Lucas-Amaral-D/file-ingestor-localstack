@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Ingestor</title>
+</head>
+<body>
+  <h1>Upload de Arquivos</h1>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <button type="submit">Enviar</button>
+  </form>
+
+  <h2>Arquivos Processados</h2>
+  <ul>
+    {% for f in files %}
+      <li>{{ f.key }} — {{ f.status }}
+        <a href="/download/{{ f.key }}">Download</a>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
