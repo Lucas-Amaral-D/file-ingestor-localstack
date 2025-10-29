@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload para S3</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Upload de Arquivo</h1>
+    {% if message %}
+        <p class="{{ 'success' if success else 'error' }}">
+            {{ message }}
+        </p>
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
+

@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: s3-localstack_localstack_1
+    environment:
+      - SERVICES=s3,dynamodb
+      - DEBUG=1
+      - AWS_DEFAULT_REGION=us-east-1
+    ports:
+      - "4566:4566"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./setup:/docker-entrypoint-initaws.d"
+    networks:
+      - s3-network
+
+  web:
+    build:
+      context: ./s3-localstack-web-app
+      dockerfile: Dockerfile
+    container_name: s3-localstack_web_1
+    ports:
+      - "5000:5000"
+    depends_on:
+      - localstack
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+      - LOCALSTACK_ENDPOINT=http://localstack:4566
+    networks:
+      - s3-network
+
+networks:
+  s3-network:
+    driver: bridge
+
